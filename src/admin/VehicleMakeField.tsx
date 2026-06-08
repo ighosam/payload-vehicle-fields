@@ -1,9 +1,9 @@
 'use client'
 
-import { SelectInput, useField,Options } from '@payloadcms/ui'
+import { SelectInput, useField } from '@payloadcms/ui'
 import type { FieldClientComponent} from 'payload'
-import { fieldIsPresentationalOnly } from 'payload/shared'
 import { useEffect, useState } from 'react'
+import { capitalize } from '../utilities/capitalize.js'
 
 type Option = { label: string; value: string }
 
@@ -25,6 +25,7 @@ const VehicleMakeField: FieldClientComponent = (props) => {
   }, [])
 
   return <SelectInput
+  label={capitalize(field.path)}
   path={field.path}
   name={field.path}
   value={field.value}

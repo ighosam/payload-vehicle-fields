@@ -6,15 +6,15 @@ export const modelField:Field = {
      
       admin: {
         components: {
-     Field:'payload-vehicle-fields/admin/ApiSelectField#default',
+     Field:'payload-vehicle-fields/admin/VehicleModelField#default',
       
     },
      // 👇 this is how the component knows where to load from
       custom: {
-      optionSource: '/api/car-db/model?make={make}&year={year}',
+      optionSource: '/api/car-db/model?make={make}',
     },
     
-     //condition: (_:VehicleParentData, siblingData:VehicleSiblingData) => Boolean(siblingData?.make),
+     condition: (_, siblingData) => Boolean(siblingData?.make),
       },
       
   

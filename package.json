@@ -12,6 +12,10 @@
   "./admin/VehicleMakeField": {
     "types": "./dist/admin/VehicleMakeField.d.ts",
     "import": "./dist/admin/VehicleMakeField.js"
+  },
+  "./admin/VehicleModelField": {
+    "types": "./dist/admin/VehicleModelField.d.ts",
+    "import": "./dist/admin/VehicleModelField.js"
   }
 },
 
@@ -23,7 +27,7 @@
     "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {
-    "payload": "^3.85.0",
+    "payload": "3.85.0",
     "@payloadcms/ui": "3.85.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"

@@ -4,6 +4,7 @@ import { makeField } from './fields/makeField.js'
 import { modelField } from './fields/modelField.js'
 import { yearField } from './fields/yearField.js'
 import { CarDbEnpoint } from './collections/cardb.js'
+import { vehicleFields } from './fields/vehicleFields.js'
 
 export const payloadVehicleFieldsPlugin =
   (options: PluginOptions):Plugin =>
@@ -18,7 +19,8 @@ export const payloadVehicleFieldsPlugin =
             ...collection,
             fields: [
               ...(collection.fields || []),
-              makeField,
+                makeField,
+                modelField      
             ],
           }
         }),
