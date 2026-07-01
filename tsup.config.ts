@@ -3,9 +3,8 @@ import { defineConfig } from 'tsup'
 export default defineConfig({
   entry: {
     index: 'src/index.ts',
-    'admin/VehicleMakeField': 'src/admin/VehicleMakeField.tsx',
-    'admin/VehicleModelField': 'src/admin/VehicleModelField.tsx',
-    'admin/VehicleYearField': 'src/admin/VehicleYearField.tsx',
+    
+    'admin/VehicleRouterField': 'src/admin/VehicleRouterField.tsx'
   },
   format: ['esm'],
   dts: true,

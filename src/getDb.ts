@@ -11,7 +11,6 @@ export const getDB = async (): Promise<Database> => {
 
   const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-  console.log('_dirname: ', __dirname)
 
   db = await open({
     filename: path.join(__dirname, '../cardb.db'),

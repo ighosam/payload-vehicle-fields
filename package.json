@@ -9,13 +9,11 @@
     "types": "./dist/index.d.ts",
     "import": "./dist/index.js"
   },
-  "./admin/VehicleMakeField": {
-    "types": "./dist/admin/VehicleMakeField.d.ts",
-    "import": "./dist/admin/VehicleMakeField.js"
-  },
-  "./admin/VehicleModelField": {
-    "types": "./dist/admin/VehicleModelField.d.ts",
-    "import": "./dist/admin/VehicleModelField.js"
+ 
+
+  "./admin/VehicleRouterField":{
+    "types": "./dist/admin/VehicleRouterField.d.ts",
+    "import": "./dist/admin/VehicleRouterField.js"
   }
 },
 

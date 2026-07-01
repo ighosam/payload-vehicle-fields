@@ -4,6 +4,8 @@ import { makeField } from './fields/makeField.js'
 import { modelField } from './fields/modelField.js'
 import { yearField } from './fields/yearField.js'
 import { CarDbEnpoint } from './collections/cardb.js'
+import { vehicleSource } from './fields/vehicleSource.js'
+import { vehicleGroup } from './fields/vehicleGroups.js'
 
 export const payloadVehicleFieldsPlugin =
   (options: PluginOptions):Plugin =>
@@ -13,13 +15,16 @@ export const payloadVehicleFieldsPlugin =
         ...(incomingConfig.collections || []).map((collection) => {
           console.log(collection.slug)
           if (collection.slug !== options.slug) return collection
+          
 
           return {
             ...collection,
             fields: [
               ...(collection.fields || []),
-                makeField,
-                modelField      
+                //vehicleSource,
+                //makeField,
+                //modelField 
+                vehicleGroup     
             ],
           }
         }),

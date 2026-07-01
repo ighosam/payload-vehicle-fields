@@ -1,7 +1,7 @@
 import type { Field } from "payload"
 
- export const makeField:Field = {
-  name: 'make',
+ export const powerField:Field = {
+  name: 'engine_power',
   type: 'text',
  
  
@@ -18,12 +18,13 @@ import type { Field } from "payload"
     },
        custom: {
       //optionSource: '/api/car-db/make',
-      endpoint: '/api/car-db/make',
-      name: 'Make',
-      dependsOn: [],
+      endpoint: '/api/car-db/engine_power',
+      name: 'Engine Power',
+      dependsOn: ['make','model','year','trim'],
     },
      // 👇 this is how the component knows where to load from
-    
+     condition: (_, siblingData) => Boolean(siblingData?.engine_type)
+      
   },
 }
 
