@@ -19,12 +19,12 @@ type NHTSAResponse = {
   }[]
 }
 
-export const decodeVin = async (vin: string): Promise<DecodedVinResult> => {
+export const decodeVin = async (vin: string,uri:string): Promise<DecodedVinResult> => {
   if (!vin || vin.length < 11) {
     throw new Error('Invalid VIN')
   }
 
-  const url = `https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVin/${vin}?format=json`
+  const url = `${uri}${vin}?format=json`
 
   const res = await fetch(url)
 

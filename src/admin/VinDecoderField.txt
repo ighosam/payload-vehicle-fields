@@ -1,0 +1,205 @@
+'use client'
+
+import React, { useState } from 'react'
+import { useField,TextInput } from '@payloadcms/ui'
+import type { FieldClientComponent } from 'payload'
+
+type DecodedVehicle = {
+  vehicleId?: number | null
+  year?: number
+  make?: string
+  model?: string
+  trim?: string
+  drivetrain?: string
+  engine?: string
+}
+type Result = {
+  Value: string
+  ValueId: string
+  Variable: string
+  VariableId: number
+}
+
+type VinResponse = {
+  Results: Result[]
+}
+
+
+
+const VinDecoderField:FieldClientComponent = (props) => {
+ 
+  const path = props.path as string
+  let filters = {}
+ 
+
+  const tField = useField<string>({path})
+  const URI = props.field.admin?.custom?.url
+  
+ 
+  const vinField = useField<string>({
+    path: 'vehicle.vinInput',
+  })
+
+  /*
+  const vehicleIdField = useField<number | null>({
+    path: 'vehicle.vehicleId',
+  })
+  */
+
+  const vehicleDataField = useField<any>({
+    path: 'vehicle.vehicleData',
+  })
+
+  const [loading, setLoading] = useState(false)
+  const [decoded, setDecoded] = useState<DecodedVehicle | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  // -----------------------------
+  // Decode VIN
+  // -----------------------------
+  const decodeVin = async () => {
+    const vin = vinField.value
+
+    if (!vin) {
+      setError('Please enter a VIN')
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+
+    try {
+
+      //no need to create local endpoint.
+      //go straight to the api and retrieve the data
+
+      //const res = await fetch(`/api/vehicle/vin/${vin}`)
+
+      const res = await fetch(`${URI}${vin}?format=json`)
+
+      console.log(`Vin URI IS : ${URI}${vin}?format=json`)
+
+      if (!res.ok) {
+        throw new Error('Failed to decode VIN')
+      }
+
+    const data: VinResponse = await res.json()
+
+    //console.log(JSON.stringify(data,null,2))  
+
+  filters = Object.fromEntries(
+  data.Results.map((res) =>
+  
+   [res.Value]
+  
+  )
+ )
+
+      setDecoded(filters)
+      //console.log(JSON.stringify(decoded,null,2))
+
+    } catch (err: any) {
+      setError(err.message || 'VIN decode failed')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
+
+
+
+  // -----------------------------
+  // Apply decoded vehicle → Payload fields
+  // -----------------------------
+  const applyVehicle = () => {
+    if (!decoded) return
+
+    vehicleDataField.setValue({
+      year: decoded.year ?? null,
+      make: decoded.make ?? '',
+      model: decoded.model ?? '',
+      trim: decoded.trim ?? '',
+      drivetrain: decoded.drivetrain ?? '',
+      engine: decoded.engine ?? '',
+    })
+
+    // optional catalog match
+    //vehicleIdField.setValue(decoded.vehicleId ?? null)
+  }
+
+  // -----------------------------
+  // UI
+  // -----------------------------
+  return (
+    <div style={{ padding: '1rem', border: '1px solid #ddd' }}>
+      <h3>VIN Decoder</h3>
+
+      {/* VIN input is usually already a Payload field,
+          but included here for clarity */}
+      {/*
+      <input
+        type="text"
+        placeholder="Enter VIN"
+        value={vinField.value || ''}
+        onChange={(e) => vinField.setValue(e.target.value)}
+        style={{ width: '100%', marginBottom: 8 }}
+      /> */
+      }
+
+       <TextInput
+             path={tField.path}
+             value={tField.value}
+             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+               tField.setValue(e.target.value)
+             }}
+             style={{ width: '100%', marginBottom: 8 }}
+           />
+
+
+      <button
+        type="button"
+        onClick={decodeVin}
+        disabled={loading}
+      >
+        {loading ? 'Decoding...' : 'Decode VIN'}
+      </button>
+
+      {error && (
+        <p style={{ color: 'red' }}>{error}</p>
+      )}
+
+      {/* ----------------------------- */}
+      {/* Preview decoded result */}
+      {/* ----------------------------- */}
+      {decoded && (
+        <div
+          style={{
+            marginTop: 12,
+            padding: 12,
+            background: '#f7f7f7',
+          }}
+        >
+          <h4>Decoded Vehicle</h4>
+
+          <p>Year: {decoded.year}</p>
+          <p>Make: {decoded.make}</p>
+          <p>Model: {decoded.model}</p>
+          <p>Trim: {decoded.trim}</p>
+          <p>Engine: {decoded.engine}</p>
+          <p>Drivetrain: {decoded.drivetrain}</p>
+
+          <button
+            type="button"
+            onClick={applyVehicle}
+            style={{ marginTop: 10 }}
+          >
+            Use This Vehicle
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default VinDecoderField

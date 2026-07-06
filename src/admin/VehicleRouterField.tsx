@@ -5,6 +5,7 @@ import { useField } from '@payloadcms/ui'
 import type { FieldClientComponent} from 'payload'
 import TextField from "./components/TextField.js"
 import DbField from './components/DbField.js'
+import VinDecoderField from './VinDecoderField.js'
 
 const VehicleRouterField:FieldClientComponent = (props) => {
 
@@ -13,7 +14,7 @@ const VehicleRouterField:FieldClientComponent = (props) => {
   switch (source.value) {
     case 'catalog':
     return <DbField {...props} />  
-    case 'cusom':
+    case 'custom':
       return <TextField {...props} />
     default:
       return null

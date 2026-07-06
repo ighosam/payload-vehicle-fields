@@ -6,7 +6,7 @@ import { ChangeEvent, useEffect } from 'react'
 
 const VehicleVinField: FieldClientComponent = (props) => {
   const path = props.path as string
-
+const URI = props.field.admin?.custom?.url
   const vinField = useField<string>({ path:'vin' })
 
   const makeField = useField<string>({ path: 'make' })
@@ -21,11 +21,13 @@ const VehicleVinField: FieldClientComponent = (props) => {
 
     const decodeVin = async () => {
       try {
-        const response = await fetch(`/api/vin/${vin}`)
+        //const response = await fetch(`/api/vin/${vin}`)
+        const response = await fetch(`${URI}${vin}?format=json`)
 
         if (!response.ok) {
           throw new Error('VIN lookup failed')
         }
+        
 
         const vehicle = await response.json()
 

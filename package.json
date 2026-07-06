@@ -14,6 +14,10 @@
   "./admin/VehicleRouterField":{
     "types": "./dist/admin/VehicleRouterField.d.ts",
     "import": "./dist/admin/VehicleRouterField.js"
+  },
+   "./admin/VinDecoderField":{
+    "types": "./dist/admin/VinDecoderField.d.ts",
+    "import": "./dist/admin/VinDecoderField.js"
   }
 },
 

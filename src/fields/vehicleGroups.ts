@@ -12,12 +12,15 @@ import { bodyField } from './bodyField.js'
 import { fuelField } from './fuelField.js'
 import { powerField } from './powerField.js'
 import { volumeField } from './volumeField.js'
+import { vinField } from './vinField.js'
 
 export const vehicleGroup: Field = {
   name: 'vehicle',
   type: 'group',
   fields: [
     vehicleSource,
+     vinField,
+
     {
      name: 'vehicleData',
      type: 'group',
@@ -34,7 +37,6 @@ export const vehicleGroup: Field = {
          volumeField
      ]
     },
-   
     /*
     {
       name: 'vehicleUi',
@@ -46,13 +48,6 @@ export const vehicleGroup: Field = {
       },
     },
     */
-   {
-    name: 'vinInput',
-    type: 'text',
-    admin:{
-      condition: (_, siblingData) => Boolean(siblingData?.vehicleSource==='vin-decoder'),
-    },
-    
-   }
+  
   ],
 }

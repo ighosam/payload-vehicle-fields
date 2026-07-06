@@ -10,7 +10,7 @@ import { getDefaultValue, type Field } from "payload"
     },
     {
         label: 'Custom Vehicle',
-        value: 'cusom'
+        value: 'custom'
     },
     {
        label: 'Vin Decoder', 

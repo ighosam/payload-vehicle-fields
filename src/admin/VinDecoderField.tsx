@@ -1,38 +1,63 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useField } from '@payloadcms/ui'
+import { useField, TextInput } from '@payloadcms/ui'
+import type { FieldClientComponent } from 'payload'
 
-type DecodedVehicle = {
-  vehicleId?: number | null
-  year?: number
-  make?: string
-  model?: string
-  trim?: string
-  drivetrain?: string
-  engine?: string
+type Result = {
+  Value: string
+  ValueId: string
+  Variable: string
+  VariableId: number|string
 }
 
-const VinDecoderField: React.FC = () => {
+type VinResponse = {
+  Results: Result[]
+}
+
+const VinDecoderField: FieldClientComponent = (props) => {
+  const path = props.path as string
+  const tField = useField<string>({ path })
+
+  const URI = props.field.admin?.custom?.url ?? ''
+
+  // Payload fields
+  const fields = {
+    make: useField<string>({ path: 'vehicle.vehicleData.make' }),
+    model: useField<string>({ path: 'vehicle.vehicleData.model' }),
+    year: useField<string>({ path: 'vehicle.vehicleData.year' }),
+    trim: useField<string>({ path: 'vehicle.vehicleData.trim' }),
+    drive: useField<string>({ path: 'vehicle.vehicleData.drive' }),
+    gearbox: useField<string>({ path: 'vehicle.vehicleData.gearbox' }),
+    engine: useField<string>({ path: 'vehicle.vehicleData.engine' }),
+    body: useField<string>({ path: 'vehicle.vehicleData.body' }),
+    engine_type: useField<string>({ path: 'vehicle.vehicleData.engine_type' }),
+    engine_power: useField<string>({ path: 'vehicle.vehicleData.engine_power' }),
+    engine_volume: useField<string>({ path: 'vehicle.vehicleData.engine_volume' }),
+  }
+
   const vinField = useField<string>({
-    path: 'vehicle.vin',
-  })
-
-  const vehicleIdField = useField<number | null>({
-    path: 'vehicle.vehicleId',
-  })
-
-  const vehicleDataField = useField<any>({
-    path: 'vehicle.vehicleData',
+    path: 'vehicle.vinInput',
   })
 
   const [loading, setLoading] = useState(false)
-  const [decoded, setDecoded] = useState<DecodedVehicle | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  // -----------------------------
-  // Decode VIN
-  // -----------------------------
+  // Maps NHTSA variable names -> Payload field names
+  const variableMap: Record<string, keyof typeof fields> = {
+    Make: 'make',
+    Model: 'model',
+    'Model Year': 'year',
+    Trim: 'trim',
+    'Drive Type': 'drive',
+    'Transmission Style': 'gearbox',
+    'Engine Model': 'engine',
+    'Body Class': 'body',
+    'Fuel Type - Primary': 'engine_type',
+    'Engine Brake (hp) From': 'engine_power',
+    'Displacement (CC)' : 'engine_volume',
+  }
+
   const decodeVin = async () => {
     const vin = vinField.value
 
@@ -45,55 +70,49 @@ const VinDecoderField: React.FC = () => {
     setError(null)
 
     try {
-      const res = await fetch(`/api/vehicle/vin/${vin}`)
+      const res = await fetch(`${URI}${vin}?format=json`)
+
+      console.log(`${URI}${vin}?format=json`)
 
       if (!res.ok) {
         throw new Error('Failed to decode VIN')
       }
 
-      const data: DecodedVehicle = await res.json()
+      const data: VinResponse = await res.json()
+      const decoded: Record<string, string> = {}
 
-      setDecoded(data)
-    } catch (err: any) {
-      setError(err.message || 'VIN decode failed')
+      console.log(data.Results)
+
+      for (const result of data.Results) {
+        if (!result.Value || result.Value === 'Not Applicable') continue
+
+        const fieldName = variableMap[result.Variable]
+
+        if (!fieldName) continue
+
+        fields[fieldName].setValue(result.Value)
+        decoded[fieldName] = result.Value
+      }
+
+      console.log(decoded)
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'VIN decode failed')
     } finally {
       setLoading(false)
     }
   }
 
-  // -----------------------------
-  // Apply decoded vehicle → Payload fields
-  // -----------------------------
-  const applyVehicle = () => {
-    if (!decoded) return
-
-    vehicleDataField.setValue({
-      year: decoded.year ?? null,
-      make: decoded.make ?? '',
-      model: decoded.model ?? '',
-      trim: decoded.trim ?? '',
-      drivetrain: decoded.drivetrain ?? '',
-      engine: decoded.engine ?? '',
-    })
-
-    // optional catalog match
-    vehicleIdField.setValue(decoded.vehicleId ?? null)
-  }
-
-  // -----------------------------
-  // UI
-  // -----------------------------
   return (
     <div style={{ padding: '1rem', border: '1px solid #ddd' }}>
       <h3>VIN Decoder</h3>
 
-      {/* VIN input is usually already a Payload field,
-          but included here for clarity */}
-      <input
-        type="text"
-        placeholder="Enter VIN"
-        value={vinField.value || ''}
-        onChange={(e) => vinField.setValue(e.target.value)}
+      <TextInput
+        path={tField.path}
+        value={tField.value}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          tField.setValue(e.target.value)
+        }
         style={{ width: '100%', marginBottom: 8 }}
       />
 
@@ -105,39 +124,7 @@ const VinDecoderField: React.FC = () => {
         {loading ? 'Decoding...' : 'Decode VIN'}
       </button>
 
-      {error && (
-        <p style={{ color: 'red' }}>{error}</p>
-      )}
-
-      {/* ----------------------------- */}
-      {/* Preview decoded result */}
-      {/* ----------------------------- */}
-      {decoded && (
-        <div
-          style={{
-            marginTop: 12,
-            padding: 12,
-            background: '#f7f7f7',
-          }}
-        >
-          <h4>Decoded Vehicle</h4>
-
-          <p>Year: {decoded.year}</p>
-          <p>Make: {decoded.make}</p>
-          <p>Model: {decoded.model}</p>
-          <p>Trim: {decoded.trim}</p>
-          <p>Engine: {decoded.engine}</p>
-          <p>Drivetrain: {decoded.drivetrain}</p>
-
-          <button
-            type="button"
-            onClick={applyVehicle}
-            style={{ marginTop: 10 }}
-          >
-            Use This Vehicle
-          </button>
-        </div>
-      )}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   )
 }
