@@ -23,6 +23,7 @@ const TextField: FieldClientComponent = (props) => {
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         tField.setValue(e.target.value)
       }}
+      style={{ width: '40%' }}
     />
   )
 }

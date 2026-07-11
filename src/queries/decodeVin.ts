@@ -1,4 +1,5 @@
 // src/queries/decodeVin.ts
+import { variableMap } from "../utilities/variableMap.js"
 
 export type DecodedVinResult = {
   vin: string
@@ -19,13 +20,16 @@ type NHTSAResponse = {
   }[]
 }
 
-export const decodeVin = async (vin: string,uri:string): Promise<DecodedVinResult> => {
+export const decodeVin = async (vin: string,url:string) => {
+
+  //const URI = `https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/`
+    const URI = url
+
   if (!vin || vin.length < 11) {
     throw new Error('Invalid VIN')
   }
-
-  const url = `${uri}${vin}?format=json`
-
+/*
+  const url = `${URI}${vin}?format=json`
   const res = await fetch(url)
 
   if (!res.ok) {
@@ -38,19 +42,36 @@ export const decodeVin = async (vin: string,uri:string): Promise<DecodedVinResul
 
   const getValue = (key: string): string | null =>
     results.find((item) => item.Variable === key)?.Value ?? null
+*/
+    const decoded: Record<string, string> = {}
+try {
+      const res = await fetch(`${URI}${vin}?format=json`)
 
-  return {
-    vin,
+      console.log(`${URI}${vin}?format=json`)
 
-    make: getValue('Make'),
-    model: getValue('Model'),
-    year: getValue('Model Year'),
+      if (!res.ok) {
+        throw new Error('Failed to decode VIN')
+      }
 
-    manufacturer: getValue('Manufacturer Name'),
-    vehicleType: getValue('Vehicle Type'),
-    bodyClass: getValue('Body Class'),
-    engine: getValue('Engine Number of Cylinders'),
+      const data: NHTSAResponse = await res.json()
+     
 
-    raw: results,
-  }
+      console.log(data.Results)
+
+      for (const result of data.Results) {
+        if (!result.Value || result.Value === 'Not Applicable') continue
+
+        const fieldName = variableMap[result.Variable]
+
+        if (!fieldName) continue
+
+        decoded[fieldName] = result.Value
+      }
+
+      console.log(decoded)
+
+    } catch (err) {
+      console.log("Somthing went wrong ****")
+    } 
+      return decoded
 }

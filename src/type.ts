@@ -5,3 +5,16 @@ export type PluginOptions = {
     database:string
   }
 }
+// vehicleFields.ts
+export type VehicleField =
+  | 'make'
+  | 'model'
+  | 'year'
+  | 'trim'
+  | 'drive'
+  | 'gearbox'
+  | 'engine'
+  | 'body'
+  | 'engine_type'
+  | 'engine_power'
+  | 'engine_volume'

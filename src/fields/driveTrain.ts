@@ -6,6 +6,7 @@ export const driveTrain:Field = {
      
       
       admin: {
+       
         components: {
 
      //Field:'payload-vehicle-fields/admin/VehicleTrimRouterField#default'

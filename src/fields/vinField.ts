@@ -15,7 +15,6 @@
     
     },
        custom: {
-      //optionSource: '/api/car-db/make',
       endpoint: '/api/car-db/vinInput',
       url: `https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/`,
       name: 'vinInput',

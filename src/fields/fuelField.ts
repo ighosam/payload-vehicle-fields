@@ -9,6 +9,7 @@ import type { Field } from "payload"
 //options: await getMakes(),
 
   admin: {
+   
     components:{
 
     

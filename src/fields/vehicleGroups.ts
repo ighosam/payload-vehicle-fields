@@ -14,40 +14,68 @@ import { powerField } from './powerField.js'
 import { volumeField } from './volumeField.js'
 import { vinField } from './vinField.js'
 
+const halfWidth = (field: Field): Field => ({
+  ...field,
+  admin: {
+    ...(field as any).admin,
+    width: '100%',
+    style: {
+          width: '100%',
+        },
+  },
+})
+
 export const vehicleGroup: Field = {
   name: 'vehicle',
   type: 'group',
   fields: [
     vehicleSource,
-     vinField,
+    vinField,
 
     {
-     name: 'vehicleData',
-     type: 'group',
-     fields:[
-         makeField,
-         modelField,
-         yearField,
-         trimField,
-         driveTrain,
-         transmission,
-         bodyField,
-         fuelField,
-         powerField,
-         volumeField
-     ]
-    },
-    /*
-    {
-      name: 'vehicleUi',
-      type: 'ui',
-      admin: {
-        components: {
-          Field: '/path/to/VehicleField',
+      name: 'vehicleData',
+      type: 'group',
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            halfWidth(makeField),
+            halfWidth(modelField),
+          ],
         },
-      },
+
+        {
+          type: 'row',
+          fields: [
+            halfWidth(yearField),
+            halfWidth(trimField),
+          ],
+        },
+
+        {
+          type: 'row',
+          fields: [
+            halfWidth(driveTrain),
+            halfWidth(transmission),
+          ],
+        },
+
+        {
+          type: 'row',
+          fields: [
+            halfWidth(bodyField),
+            halfWidth(fuelField),
+          ],
+        },
+
+        {
+          type: 'row',
+          fields: [
+            halfWidth(powerField),
+            halfWidth(volumeField),
+          ],
+        },
+      ],
     },
-    */
-  
   ],
 }

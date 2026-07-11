@@ -4,7 +4,7 @@ import { CollectionConfig } from 'payload';
 //import { yearEdnpoint } from '../enpoints/yearEndpoint.js';
 //import { trimEdnpoint } from '../enpoints/trimEndpoint.js';
 import { createOptionsEndpoint } from '../enpoints/createOptionsEndpoint.js';
-
+import { vinEndpoint } from '../enpoints/vinEndpoint.js';
 //This collection is created so as the place the endpoints here
 // to separate it from payload endpoints
 const yearEndpoint = createOptionsEndpoint('year')
@@ -41,6 +41,7 @@ export const CarDbEnpoint: CollectionConfig = {
     bodyStyleEndpoint,
     fuelTypeEndpoint,
     powerEndpoint,
-    volumeEndpoint
+    volumeEndpoint,
+    vinEndpoint
   ]
 }

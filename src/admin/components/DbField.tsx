@@ -162,8 +162,9 @@ switch (path) {
       value={field.value}
       options={options}
       onChange={(option) =>
-        field.setValue((option as Option).value)
+      field.setValue((option as Option).value)
       }
+      style={{ width: '40%' }}
     />
   )
 }
