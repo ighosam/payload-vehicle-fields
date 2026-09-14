@@ -9,7 +9,7 @@ import { getDefaultValue, type Field } from "payload"
         value: 'catalog'
     },
     {
-        label: 'Custom Vehicle',
+        label: 'Custom or Vin-Decode',
         value: 'custom'
     },
     /*
@@ -19,6 +19,6 @@ import { getDefaultValue, type Field } from "payload"
     }
      */
   ],
-  defaultValue: 'catalog'
+  defaultValue: 'custom'
 }
 
