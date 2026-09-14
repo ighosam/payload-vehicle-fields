@@ -12,10 +12,12 @@ import { getDefaultValue, type Field } from "payload"
         label: 'Custom Vehicle',
         value: 'custom'
     },
+    /*
     {
-       label: 'Vin Decoder', 
+      label: 'Vin Decoder', 
        value: 'vin-decoder'
     }
+     */
   ],
   defaultValue: 'catalog'
 }

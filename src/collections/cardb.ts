@@ -5,6 +5,7 @@ import { CollectionConfig } from 'payload';
 //import { trimEdnpoint } from '../enpoints/trimEndpoint.js';
 import { createOptionsEndpoint } from '../enpoints/createOptionsEndpoint.js';
 import { vinEndpoint } from '../enpoints/vinEndpoint.js';
+import { PluginOptions } from '../type.js';
 //This collection is created so as the place the endpoints here
 // to separate it from payload endpoints
 const yearEndpoint = createOptionsEndpoint('year')
@@ -18,7 +19,7 @@ const fuelTypeEndpoint = createOptionsEndpoint('engine_type')
 const powerEndpoint = createOptionsEndpoint('engine_power')
 const volumeEndpoint = createOptionsEndpoint('engine_volume')
 
-export const CarDbEnpoint: CollectionConfig = {
+export const CarDbEnpoint = (options:PluginOptions): CollectionConfig => ({
   slug: 'car-db',
   access: {
     read: () => true, // Adjust permissions as needed
@@ -42,6 +43,6 @@ export const CarDbEnpoint: CollectionConfig = {
     fuelTypeEndpoint,
     powerEndpoint,
     volumeEndpoint,
-    vinEndpoint
+    vinEndpoint(options)
   ]
-}
+})

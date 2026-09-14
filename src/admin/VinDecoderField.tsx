@@ -45,6 +45,7 @@ const VinDecoderField: FieldClientComponent = (props) => {
     try {
       const res = await fetch(`/api/car-db/vin/${vin}`)
 
+      console.log('Response is: ', res)
       if (!res.ok) {
         throw new Error('VIN decode failed')
       }

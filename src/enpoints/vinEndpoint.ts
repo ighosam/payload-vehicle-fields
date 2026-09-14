@@ -1,18 +1,19 @@
 import { type Endpoint } from 'payload'
 import { decodeVin } from '../queries/decodeVin.js'
 import { getVinFieldUrl } from '../utilities/getVinFieldUrl.js'
+import { PluginOptions } from '../type.js'
 
 
-export const vinEndpoint: Endpoint = {
+export const vinEndpoint = (options:PluginOptions):Endpoint => ({
   path: '/vin/:vin',
   method: 'get',
   handler: async (req) => {
     const vin = req.routeParams?.vin
 
 ////////////////
-
+// listings
    const collection = req.payload.config.collections.find(
-  (c) => c.slug === 'listings',
+  (c) => options.collections.includes(c.slug)
 )
 if(!collection) return Response.json(
         { error: 'can not find url' },
@@ -36,4 +37,4 @@ console.log(vinField_url)
 
     return Response.json(result)
   },
-}
+})

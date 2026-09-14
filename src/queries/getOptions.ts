@@ -1,5 +1,6 @@
 import { getDB } from '../getDb.js'
 import { buildWhereClause } from '../utilities/buildWhereClause.js';
+import { getDatabasePath } from '../utilities/getDatabasePath.js';
 
 interface VehicleFilters {
   make?: string
@@ -18,7 +19,9 @@ export async function getOptions(
   name:string,filters: VehicleFilters
 ): Promise<{ label: string; value: string }[]> {
 
-  const db = await getDB()
+  const dbPath = getDatabasePath()
+  
+  const db = await getDB(dbPath)
 
   const { where, params } = buildWhereClause(filters)
 

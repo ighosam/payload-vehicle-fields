@@ -162,3 +162,5 @@ If you decides to us tsup.config.ts, don't forget to update your script section 
 
 ```"build": "tsup"```
 
+# How to use this plugins
+ First install the plugin

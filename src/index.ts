@@ -13,8 +13,9 @@ export const payloadVehicleFieldsPlugin =
       ...incomingConfig,
       collections: [
         ...(incomingConfig.collections || []).map((collection) => {
-          console.log(collection.slug)
-          if (collection.slug !== options.slug) return collection
+         
+          //if (collection.slug !== options.slug) return collection
+          if (!options.collections.includes(collection.slug)) return collection
           
 
           return {
@@ -24,11 +25,12 @@ export const payloadVehicleFieldsPlugin =
                 //vehicleSource,
                 //makeField,
                 //modelField 
-                vehicleGroup     
+                vehicleGroup   
             ],
           }
+        
         }),
-        CarDbEnpoint,
+        CarDbEnpoint(options),
       ],
     
   })
