@@ -15,6 +15,7 @@ export const modelField:Field = {
     },
      // 👇 this is how the component knows where to load from
       custom: {
+        behavior: 'vehicle-value',
       //optionSource: '/api/car-db/model?make={make}',
       endpoint: '/api/car-db/model',
       name: 'Model',

@@ -7,13 +7,14 @@ export const transmission:Field = {
       
       admin: {
         components: {
-
+       
      //Field:'payload-vehicle-fields/admin/VehicleTrimRouterField#default'
      Field: 'payload-vehicle-fields/admin/VehicleRouterField#default'
       
     },
      // 👇 this is how the component knows where to load from
       custom: {
+        behavior: 'vehicle-value',
       //optionSource: '/api/car-db/model?make={make}',
       endpoint: '/api/car-db/gearbox',
       name: 'Transmission',

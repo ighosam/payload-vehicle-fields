@@ -89,7 +89,7 @@ switch (path) {
 ///////
   const dependsOn = props.field.admin?.custom?.dependsOn
 
-  console.log('the endpoint is: ',endpoint)
+  //console.log('the endpoint is: ',endpoint)
 
   filters = Object.fromEntries(
   dependsOn.map((res:stringMap) =>[res,value[res]])
@@ -118,7 +118,7 @@ switch (path) {
   }
 */
   try {
-    console.log('Params:', params.toString())
+    //console.log('Params:', params.toString())
 
     const res = await fetch(`${endpoint}?${params}`, {
       signal: controller.signal,

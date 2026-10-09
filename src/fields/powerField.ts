@@ -17,6 +17,7 @@ import type { Field } from "payload"
     
     },
        custom: {
+        behavior: 'vehicle-value',
       //optionSource: '/api/car-db/make',
       endpoint: '/api/car-db/engine_power',
       name: 'Engine Power',

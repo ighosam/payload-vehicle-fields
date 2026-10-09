@@ -15,6 +15,7 @@ export const yearField:Field = {
     },
      // 👇 this is how the component knows where to load from
       custom: {
+      behavior: 'vin-decoder',
       //optionSource: '/api/car-db/model?make={make}',
       endpoint: '/api/car-db/year',
       name: 'Year',

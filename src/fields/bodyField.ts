@@ -18,6 +18,7 @@ import type { Field } from "payload"
     
     },
        custom: {
+        behavior: 'vin-decoder',
       //optionSource: '/api/car-db/make',
       endpoint: '/api/car-db/body',
       name: 'Body Type',

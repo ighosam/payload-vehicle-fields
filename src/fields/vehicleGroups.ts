@@ -28,6 +28,13 @@ const halfWidth = (field: Field): Field => ({
 export const vehicleGroup: Field = {
   name: 'vehicle',
   type: 'group',
+  label:'vehicle',
+  
+  admin: {
+    custom: {
+      behavior: 'vehicle-selector',
+    },
+  },
   fields: [
     vehicleSource,
     vinField,
